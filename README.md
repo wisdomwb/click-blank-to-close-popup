@@ -1,0 +1,1 @@
+Using native JS to close the popup by clicking on the blank. 

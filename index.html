@@ -1,0 +1,78 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta http-equiv="X-UA-Compatible" content="ie=edge">
+  <title>点击空白隐藏弹窗</title>
+  <style>
+    ul{
+      padding: 0;
+    }
+    li{
+      list-style: none;
+    }
+    .wrapper {
+      position: relative;
+    }
+    .popup {
+      display: none;
+      width: 80px;
+      background: #ccc;
+      box-shadow: 5px 5px 10px #888888;
+    }
+    .popup.active{
+      display: block;
+      position: absolute;
+    }
+  </style>
+</head>
+
+<body>
+  <div class="wrapper" data-value="wrapper">
+    <button type="button" id="button">工具箱</button>
+    <ul class="popup" data-value="popup">
+      <li>测距</li>
+      <li>标记</li>
+      <li>分享</li>
+    </ul>
+  </div>
+  <script>
+    //点击按钮
+    const listener = (event) => {
+      let popup = document.querySelector('.popup')
+      if (popup.className.indexOf('active') > -1) {
+        popup.classList.remove('active')
+      } else {
+        popup.classList.add('active')
+      }
+      event.stopPropagation()
+    }
+    //点击空白
+    const listener1 = (event) => {
+      const popup = document.querySelector('.popup')
+      const isButton = event.target.id === 'button'
+      const isPopup = event.target.getAttribute('data-value') === 'popup'
+      const isPopupPosterity = popup.contains(event.target)
+      //空白区域定义为：非按钮节点、非弹窗节点、非弹窗后代元素
+      if (!isButton && !isPopup && !isPopupPosterity) {
+        popup.classList.remove('active')
+      }
+    }
+    //点击弹窗内容
+    const listener2 = (event) => {
+      alert(`你点击了${event.target.innerHTML}`)
+    }
+
+    document.getElementById("button").addEventListener('click', listener)
+    document.addEventListener('click', listener1)
+    const lis = document.querySelectorAll('.popup li')
+    for (i = 0; i < lis.length; ++i) {
+      lis[i].addEventListener('click', listener2)
+    }
+
+  </script>
+</body>
+
+</html>
